@@ -55,7 +55,7 @@
     <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
     <script>
       $(function() {
-        var socket = io.connect("3.132.91.40", { secure: true });
+        var socket = io.connect("https://hugary.dev:3000", { secure: true });
         $("form").submit(function() {
           socket.emit("chat message", $("#m").val());
           $("#m").val("");

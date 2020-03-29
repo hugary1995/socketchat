@@ -27,7 +27,7 @@ const httpsServer = https.createServer(credentials, app);
 var io = require("socket.io")(httpsServer);
 var port = process.env.PORT || 3000;
 
-app.get("/chat", function(req, res) {
+app.get("/", function(req, res) {
   res.sendFile(__dirname + "/index.html");
 });
 
