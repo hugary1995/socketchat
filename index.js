@@ -1,6 +1,7 @@
 var app = require("express")();
 var https = require("https").Server(app);
-var io = require("socket.io")(http);
+var io = require("socket.io")(https);
+var fs = require("fs");
 var port = process.env.PORT || 3000;
 
 app.get("/chat", function(req, res) {
