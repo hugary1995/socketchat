@@ -36,6 +36,6 @@ io.on("connection", function(socket) {
   });
 });
 
-server.listen(port, () => {
+server.listen(serverPort, () => {
   console.log("HTTPS server running");
 });
