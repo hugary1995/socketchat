@@ -1,18 +1,6 @@
 var app = require("express")();
-var https = require("https").Server(app);
-var io = require("socket.io")(https);
+var https = require("https");
 var fs = require("fs");
-var port = process.env.PORT || 3000;
-
-app.get("/chat", function(req, res) {
-  res.sendFile(__dirname + "/index.html");
-});
-
-io.on("connection", function(socket) {
-  socket.on("chat message", function(msg) {
-    io.emit("chat message", msg);
-  });
-});
 
 // Certificate
 const privateKey = fs.readFileSync(
@@ -34,8 +22,20 @@ const credentials = {
   ca: ca
 };
 
-// Starting servers
 const httpsServer = https.createServer(credentials, app);
+
+var io = require("socket.io")(httpsServer);
+var port = process.env.PORT || 3000;
+
+app.get("/chat", function(req, res) {
+  res.sendFile(__dirname + "/index.html");
+});
+
+io.on("connection", function(socket) {
+  socket.on("chat message", function(msg) {
+    io.emit("chat message", msg);
+  });
+});
 
 httpsServer.listen(port, () => {
   console.log("HTTPS server running");
