@@ -1,31 +1,30 @@
-var app = require("express")();
-var https = require("https");
 var fs = require("fs");
+var https = require("https");
+var express = require("express");
+
+var app = express();
 
 // Certificate
-const privateKey = fs.readFileSync(
+var privateKey = fs.readFileSync(
   "/etc/letsencrypt/live/hugary.dev/privkey.pem",
   "utf8"
 );
-const certificate = fs.readFileSync(
+var certificate = fs.readFileSync(
   "/etc/letsencrypt/live/hugary.dev/cert.pem",
   "utf8"
 );
-const ca = fs.readFileSync(
-  "/etc/letsencrypt/live/hugary.dev/chain.pem",
-  "utf8"
-);
+var ca = fs.readFileSync("/etc/letsencrypt/live/hugary.dev/chain.pem", "utf8");
 
-const credentials = {
+var credentials = {
   key: privateKey,
   cert: certificate,
   ca: ca
 };
 
-const httpsServer = https.createServer(credentials, app);
+var serverPort = 3000;
 
-var io = require("socket.io")(httpsServer);
-var port = process.env.PORT || 3000;
+var server = https.createServer(credentials, app);
+var io = require("socket.io")(server);
 
 app.get("/", function(req, res) {
   res.sendFile(__dirname + "/index.html");
